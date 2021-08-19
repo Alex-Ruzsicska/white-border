@@ -34,7 +34,6 @@ function generateFrame(image, ratio, multiplier){
     frameAux.top = frameAux.bottom = (finalHeight-height)/2;
     frameAux.left = frameAux.right = (finalWidth-width)/2;
   
-    console.log(frameAux);
     return frameAux;
   }
   return {top:0, bottom:0, right:0, left:0};
