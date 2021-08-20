@@ -9,12 +9,12 @@ export default StyleSheet.create({
     },  
     body: {
         flex: 7,
-        backgroundColor: 'green',
+        backgroundColor: '#f0f0f0',
         padding: 5
     },
     footer: {
         flex: 3,
-        backgroundColor: 'red',
+        backgroundColor: '#f0f0f0',
         padding: 1
     },  
     ratiosContainer: {
@@ -23,7 +23,7 @@ export default StyleSheet.create({
     },
     borderWidthContainer: {
         flex: 1,
-        backgroundColor: 'yellow',
+        // backgroundColor: 'yellow',
         flexDirection: 'row',
         padding: 5
     }

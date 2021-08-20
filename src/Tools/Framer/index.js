@@ -76,6 +76,11 @@ const Framer = () =>{
           icon="image-plus"
           onPress={()=>{pickImage(setImage)}}
         />
+        <Appbar.Content title="Framer"/>
+        <Appbar.Action
+          icon="content-save"
+          // onPress={()=>{pickImage(setImage)}}
+        />
       </Appbar.Header>
 
       <View style={Styles.body}>
@@ -93,7 +98,7 @@ const Framer = () =>{
             value={ratio}
           >
             {ratios.map((ratio, index)=>(
-              <ToggleButton value={ratio} icon="bluetooth" style={{flex: 1, height:'100%', borderRadius: 0, backgroundColor: "green", margin: 1}} key={index} color="blue"/>
+              <ToggleButton value={ratio} icon="bluetooth" style={{flex: 1, height:'100%', margin: 1}} key={index}/>
             ))}
           </ToggleButton.Row>
         </View>
@@ -103,8 +108,9 @@ const Framer = () =>{
             icon="minus"
             size={40} 
             onPress={()=>{
-              setFrame(generateFrame(image, ratio, multiplier-0.05));  
-              setMultiplier(multiplier-0.05);
+              let multiplierAux = (multiplier-0.05) > 1? (multiplier-0.05) : 1;
+              setFrame(generateFrame(image, ratio, multiplierAux));  
+              setMultiplier(multiplierAux);
             }}
             style={{margin: 5, flex: 2}}
           >
@@ -117,8 +123,9 @@ const Framer = () =>{
             icon="plus"
             size={40}
             onPress={()=>{
-              setFrame(generateFrame(image, ratio, multiplier+0.05));  
-              setMultiplier(multiplier+0.05);
+              let multiplierAux = multiplier+0.05;
+              setFrame(generateFrame(image, ratio, multiplierAux));  
+              setMultiplier(multiplierAux);
             }}
             style={{flex: 2, margin: 5 }}
           >
