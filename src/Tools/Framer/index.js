@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Styles from './Styles';
 import { View } from 'react-native';
 import { Appbar, TextInput, ToggleButton, IconButton, Text, Button } from 'react-native-paper';
-import { CvImage, CvInvoke, Core } from 'react-native-opencv3';
+import { CvImage, CvInvoke, Core, CvScalar } from 'react-native-opencv3';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 
@@ -54,7 +54,7 @@ const Framer = () =>{
   ];
 
   const imageComponent = image.uri? (
-    <CvInvoke func='copyMakeBorder' params={{"p1":"srcMat","p2":"dstMat", "p3": frame.top, "p4": frame.bottom, "p5": frame.left, "p6": frame.right, "p7": Core.BORDER_CONSTANT}}>
+    <CvInvoke func='copyMakeBorder' params={{"p1":"srcMat","p2":"dstMat", "p3": frame.top, "p4": frame.bottom, "p5": frame.left, "p6": frame.right, "p7": Core.BORDER_CONSTANT, "p8": new CvScalar(255,255,255)}}>
           <CvImage 
             source={image}
             key={Date.now()}
@@ -95,8 +95,9 @@ const Framer = () =>{
       <View style={Styles.footer}> 
         <View style={Styles.ratiosContainer}>
           {
-            ratios.map((r)=>(
+            ratios.map((r, index)=>(
               <Button 
+                key={index}
                 mode="contained"
                 color= {ratio == r.value? "black":"white"}
                 style={Styles.ratioButton}
