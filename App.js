@@ -4,7 +4,7 @@ import Framer from './src/Tools/Framer';
 
 const theme = {
   ...DefaultTheme,
-  roundness: 50,
+  roundness: 100,
   colors: {
     ...DefaultTheme.colors,
     primary: 'black',

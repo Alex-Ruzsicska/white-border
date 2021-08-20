@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Styles from './Styles';
 import { View } from 'react-native';
-import { Appbar, TextInput, ToggleButton, IconButton, Text } from 'react-native-paper';
+import { Appbar, TextInput, ToggleButton, IconButton, Text, Button } from 'react-native-paper';
 import { CvImage, CvInvoke, Core } from 'react-native-opencv3';
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -46,7 +46,12 @@ const Framer = () =>{
   const [ ratio, setRatio ] = useState(1)
   const [ image, setImage ] = useState({uri: ''});
   const [ multiplier, setMultiplier ] = useState(1);
-  const ratios = [1/1, 16/9, 4/5, 5/4];
+  const ratios = [
+    {value: 1/1, name:"1:1"}, 
+    {value:16/9, name:"16:9"}, 
+    {value: 4/5, name:"4:5"}, 
+    {value: 5/4, name:"5:4"}
+  ];
 
   const imageComponent = image.uri? (
     <CvInvoke func='copyMakeBorder' params={{"p1":"srcMat","p2":"dstMat", "p3": frame.top, "p4": frame.bottom, "p5": frame.left, "p6": frame.right, "p7": Core.BORDER_CONSTANT}}>
@@ -89,18 +94,22 @@ const Framer = () =>{
 
       <View style={Styles.footer}> 
         <View style={Styles.ratiosContainer}>
-          <ToggleButton.Row
-            style={{flex:1, padding: 5}}
-            onValueChange={(value) => {
-              setRatio(value);
-              setFrame(generateFrame(image, value, multiplier));
-            }}
-            value={ratio}
-          >
-            {ratios.map((ratio, index)=>(
-              <ToggleButton value={ratio} icon="bluetooth" style={{flex: 1, height:'100%', margin: 1}} key={index}/>
-            ))}
-          </ToggleButton.Row>
+          {
+            ratios.map((r)=>(
+              <Button 
+                mode="contained"
+                color= {ratio == r.value? "black":"white"}
+                style={Styles.ratioButton}
+                
+                onPress={()=>{
+                  setFrame(generateFrame(image, r.value, multiplier));
+                  setRatio(r.value);
+                }}
+              >
+                {r.name}
+              </Button>
+            ))
+          }
         </View>
 
         <View style={Styles.borderWidthContainer}>

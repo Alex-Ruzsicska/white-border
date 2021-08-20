@@ -19,6 +19,7 @@ export default StyleSheet.create({
     },  
     ratiosContainer: {
         flex: 1,
+        flexDirection: 'row'
         // backgroundColor: 'gray',
     },
     borderWidthContainer: {
@@ -26,5 +27,13 @@ export default StyleSheet.create({
         // backgroundColor: 'yellow',
         flexDirection: 'row',
         padding: 5
+    },
+    ratioButton:{
+        flex: 1, 
+        borderColor: 'black', 
+        borderWidth: 1, 
+        margin: 5, 
+        alignItems: 'center', 
+        justifyContent: 'center'
     }
 })
