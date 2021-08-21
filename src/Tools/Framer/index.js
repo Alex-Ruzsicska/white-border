@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import Styles from './Styles';
 import { View } from 'react-native';
-import { Appbar, TextInput, ToggleButton, IconButton, Text, Button } from 'react-native-paper';
+import CameraRoll from "@react-native-community/cameraroll";
+import { Appbar, IconButton, Text, Button } from 'react-native-paper';
 import { CvImage, CvInvoke, Core, CvScalar } from 'react-native-opencv3';
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -14,6 +15,15 @@ function pickImage(setImage){
       setImage(response.assets[0]);
     }
   });
+}
+
+async function saveImage(uri){
+  await CameraRoll.saveToCameraRoll(uri).then(()=>{
+    console.log("Image saved.");
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
 }
 
 function generateFrame(image, ratio, multiplier){
@@ -84,7 +94,7 @@ const Framer = () =>{
         <Appbar.Content title="Framer"/>
         <Appbar.Action
           icon="content-save"
-          // onPress={()=>{pickImage(setImage)}}
+          onPress={async ()=>{await saveImage(image.uri)}}
         />
       </Appbar.Header>
 
