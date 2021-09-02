@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Styles from './Styles';
-import { View } from 'react-native';
+import { View, PermissionsAndroid, Platform, Alert } from 'react-native';
 import CameraRoll from "@react-native-community/cameraroll";
 import { Appbar, IconButton, Text, Button } from 'react-native-paper';
 import { CvImage, CvInvoke, Core, CvScalar } from 'react-native-opencv3';
@@ -17,9 +17,24 @@ function pickImage(setImage){
   });
 }
 
+async function hasAndroidPermission() {
+  const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
+  const hasPermission = await PermissionsAndroid.check(permission);
+  if (hasPermission) {
+    return true;
+  }
+
+  const status = await PermissionsAndroid.request(permission);
+  return status === 'granted';
+}
+
 async function saveImage(uri){
-  await CameraRoll.saveToCameraRoll(uri).then(()=>{
-    console.log("Image saved.");
+  if (Platform.OS === "android" && !(await hasAndroidPermission())) {
+    return;
+  }
+
+  await CameraRoll.save(uri, { album: 'WhiteBorder' }).then(()=>{
+    Alert.alert("", "Image saved to WhiteBorder's album!")
   })
   .catch((error)=>{
     console.log(error);
