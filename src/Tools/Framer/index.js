@@ -8,10 +8,20 @@ import { launchImageLibrary } from 'react-native-image-picker';
 
 
 
+function generateDestinationUri(image){
+  let uri = image.uri.slice(7);
+  let fileExtension = uri.slice(uri.length-4, uri.length);
+  uri = uri.slice(0, uri.length-4);
+
+  return uri + `(${image.updatesAmount})` + fileExtension;
+}
+
 function pickImage(setImage){
   launchImageLibrary({mediaType: 'photo', quality: 1, includeBase64: false}, (response)=>{
     if(response.assets && response.assets.length > 0){
       response.assets[0].updatesAmount = 0;
+      response.assets[0].destUri = generateDestinationUri(response.assets[0]);
+
       setImage(response.assets[0]);
     }
   });
@@ -93,6 +103,7 @@ const Framer = () =>{
   useEffect(()=>{
     let imageAux = image;
     imageAux.updatesAmount++;
+    imageAux.destUri = generateDestinationUri(image);
     setImage(imageAux);
   }, [frame]);
 
@@ -109,7 +120,10 @@ const Framer = () =>{
         <Appbar.Content title="Framer"/>
         <Appbar.Action
           icon="content-save"
-          onPress={async ()=>{await saveImage(image.uri)}}
+          onPress={async ()=>{
+            console.log(image);
+            await saveImage(image.destUri)
+          }}
         />
       </Appbar.Header>
 
