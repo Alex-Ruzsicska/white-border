@@ -5,7 +5,7 @@ export default StyleSheet.create({
         flex: 1
     },
     header: {
-        flex: 2,
+        flex: 1,
     },  
     body: {
         flex: 7,
@@ -19,6 +19,13 @@ export default StyleSheet.create({
         backgroundColor: 'white',
         padding: 1
     },  
+    optionsContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        backgroundColor: 'green'
+    },
     ratiosContainer: {
         flex: 1,
         flexDirection: 'row'

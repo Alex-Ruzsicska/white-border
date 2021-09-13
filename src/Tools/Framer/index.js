@@ -81,6 +81,7 @@ const Framer = () =>{
   const [ ratio, setRatio ] = useState(1)
   const [ image, setImage ] = useState({uri: ''});
   const [ multiplier, setMultiplier ] = useState(1);
+  const [ rotate, setRotate ] = useState(-1);
   const ratios = [
     {value: 1/1, name:"1:1"}, 
     {value:16/9, name:"16:9"}, 
@@ -89,23 +90,39 @@ const Framer = () =>{
   ];
 
   const imageComponent = image.uri? (
-    <CvInvoke func='copyMakeBorder' params={{"p1":"srcMat","p2":"dstMat", "p3": frame.top, "p4": frame.bottom, "p5": frame.left, "p6": frame.right, "p7": Core.BORDER_CONSTANT, "p8": new CvScalar(255,255,255)}}>
-          <CvImage 
-            source={image}
-            key={Date.now()}
-            style={{resizeMode: 'contain', flex: 1}}
-          >
-          </CvImage>
-    </CvInvoke>
+    rotate >= 0?
+    (
+      <CvInvoke func='copyMakeBorder' params={{"p1":"dstMat","p2":"dstMat", "p3": frame.top, "p4": frame.bottom, "p5": frame.left, "p6": frame.right, "p7": Core.BORDER_CONSTANT, "p8": new CvScalar(255,255,255)}}>
+         <CvInvoke func='rotate' params={{"p1":"srcMat","p2":"dstMat","p3":rotate}}>
+            <CvImage 
+              source={image}
+              key={Date.now()}
+              style={{resizeMode: 'contain', flex: 1}}
+            >
+            </CvImage>
+        </CvInvoke>
+      </CvInvoke>
+    ):
+    (
+      <CvInvoke func='copyMakeBorder' params={{"p1":"srcMat","p2":"dstMat", "p3": frame.top, "p4": frame.bottom, "p5": frame.left, "p6": frame.right, "p7": Core.BORDER_CONSTANT, "p8": new CvScalar(255,255,255)}}>
+            <CvImage 
+              source={image}
+              key={Date.now()}
+              style={{resizeMode: 'contain', flex: 1}}
+            >
+            </CvImage>
+      </CvInvoke>
+    )
 
   ) : (<></>);
+  
 
   useEffect(()=>{
     let imageAux = image;
     imageAux.updatesAmount++;
     imageAux.destUri = generateDestinationUri(image);
     setImage(imageAux);
-  }, [frame]);
+  }, [frame, rotate]);
 
 
   return(
@@ -121,7 +138,6 @@ const Framer = () =>{
         <Appbar.Action
           icon="content-save"
           onPress={async ()=>{
-            console.log(image);
             await saveImage(image.destUri)
           }}
         />
@@ -132,6 +148,8 @@ const Framer = () =>{
       </View>
 
       <View style={Styles.footer}> 
+
+       
         <View style={Styles.ratiosContainer}>
           {
             ratios.map((r, index)=>(
@@ -179,6 +197,15 @@ const Framer = () =>{
             style={{flex: 2, margin: 5 }}
           >
           </IconButton>
+          <IconButton 
+              icon="format-rotate-90"
+              size={40} 
+              onPress={()=>{
+                setRotate(rotate + 1 > 2? -1 : rotate + 1);
+              }}
+              style={{margin: 5, flex: 4}}
+          />
+
         </View>
 
       </View>
